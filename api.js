@@ -15,6 +15,14 @@ app.use((err, req, res, next) => {
   res.status(err.status).send(err.message)
 })
 
-app.listen(process.env.PORT || 5555, () =>
-  console.log('TACOS!', process.env.PORT || 5555)
-)
+// module.parent -- the test module that required api.js module
+// if a test module did not require in api.js,
+//then listen for outside client http requests on port 5555
+
+if (!module.parent) {
+  app.listen(process.env.PORT || 5555, () =>
+    console.log('TACOS!', process.env.PORT || 5555)
+  )
+}
+
+module.exports = app
